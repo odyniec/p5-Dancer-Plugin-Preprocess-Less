@@ -1,0 +1,76 @@
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Dancer::Plugin::Preprocess::Less - Generate CSS files from .less files
+
+=head1 VERSION
+
+version 0.010
+
+=head1 SYNOPSIS
+
+Dancer::Plugin::Preprocess::LESS automatically generates CSS files from Less
+files in a Dancer web application.
+
+Add the plugin to your application:
+
+    use Dancer::Plugin::Preprocess::Less;
+
+Configure its settings in the YAML configuration file:
+
+    plugins:
+      "Preprocess::Less":
+        save: 1
+        paths:
+          - css
+          - subdir/css
+
+=head1 SEE ALSO
+
+=over 4
+
+
+
+=back
+
+* L<http://lesscss.org/> - Less website
+
+* L<CSS::LESSp>
+
+=head1 ACKNOWLEDGEMENTS
+
+The plugin uses Ivan Drinchev's L<CSS::LESSp> module. 
+
+=for :stopwords cpan testmatrix url annocpan anno bugtracker rt cpants kwalitee diff irc mailto metadata placeholders metacpan
+
+=head1 SUPPORT
+
+=head2 Bugs / Feature Requests
+
+Please report any bugs or feature requests through the issue tracker
+at L<https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Less/issues>.
+You will be notified automatically of any progress on your issue.
+
+=head2 Source Code
+
+This is open source software.  The code repository is available for
+public review and contribution under the terms of the license.
+
+L<https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Less>
+
+  git clone https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Less.git
+
+=head1 AUTHOR
+
+Michal Wojciechowski <odyniec@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2014 by Michal Wojciechowski.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
