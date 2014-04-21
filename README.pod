@@ -8,7 +8,7 @@ Dancer::Plugin::Preprocess::Less - Generate CSS files from .less files
 
 =head1 VERSION
 
-version 0.010
+version 0.020
 
 =head1 SYNOPSIS
 
@@ -27,6 +27,45 @@ Configure its settings in the YAML configuration file:
         paths:
           - css
           - subdir/css
+
+=head1 DESCRIPTION
+
+Dancer::Plugin::Preprocess::Less adds support for Less files in a Dancer web
+application.
+
+When a request is received for a CSS file, the plugin looks for a Less file with
+the same name, and transforms it into CSS. The generated CSS file may then be
+saved and served as a regular static file. Every time the source Less file gets
+modified, the corresponding CSS file is regenerated.
+
+=head1 CONFIGURATION
+
+The available configuration settings are described below.
+
+=head2 save
+
+If set to C<0>, then the CSS files are generated on-the-fly with every request.
+If set to C<1>, the files are generated once and saved, then served as static
+files later on.
+
+CSS files are saved in the same directory as the Less files, so the system user
+that the web application is running as must be allowed to write to that
+directory.
+
+Default: C<0>
+
+=head2 paths
+
+A list of paths to serve CSS files from. Each path is relative to the C<public>
+directory of the application.
+
+    plugins:
+      "Preprocess::Less":
+        paths:
+          - css
+          - subdir/css
+
+Default: C<'css'>
 
 =head1 SEE ALSO
 

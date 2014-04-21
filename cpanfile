@@ -3,6 +3,7 @@ requires "Cwd" => "0";
 requires "Dancer" => "0";
 requires "Dancer::Plugin" => "0";
 requires "File::Spec::Functions" => "0";
+requires "IPC::Open3" => "0";
 requires "perl" => "5.006";
 requires "strict" => "0";
 requires "warnings" => "0";
