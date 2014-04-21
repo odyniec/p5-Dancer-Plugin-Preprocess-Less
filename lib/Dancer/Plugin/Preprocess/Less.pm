@@ -7,11 +7,11 @@ use warnings;
 
 # VERSION
 
-use CSS::LESSp;
 use Cwd 'abs_path';
 use Dancer ':syntax';
 use Dancer::Plugin;
 use File::Spec::Functions qw(catfile);
+use IPC::Open3 qw(open3);
 
 my $settings = plugin_setting;
 my $paths;
@@ -27,6 +27,21 @@ else {
 
 # Translate URL paths to filesystem paths
 my @fs_paths = map { catfile(split('/'), "") } @$paths;
+
+my $process_file;
+
+if (`lessc -v`) {
+    $process_file = \&_process_with_lessc;
+}
+elsif (eval { require CSS::LESSp }) {
+    $process_file = \&_process_with_CSS_LESSp;
+}
+else {
+    error __PACKAGE__ .
+        ": lessc binary or CSS::LESSp is required but neither was found";
+    # This is a fatal error
+    return false;
+}
 
 if ($settings->{save}) {
     # Check if the directories are writable
@@ -46,7 +61,19 @@ my $paths_re = join '|', map {
     quotemeta $s;
 } reverse sort @$paths;
 
-sub _process_less_file {
+sub _process_with_lessc {
+    my $less_file = shift;
+    
+    my $pid = open3(my $chld_in, my $chld_out, my $chld_err, 'lessc',
+        $less_file);
+    
+    my $css = join '', <$chld_out>;
+    waitpid $pid, 0;
+
+    return $css;
+}
+
+sub _process_with_CSS_LESSp {
     my $less_file = shift;
     
     open (my $f, '<', $less_file);
@@ -78,7 +105,7 @@ hook before_file_render => sub {
 
         if (-f $input_file && (stat($path))[9] < (stat($input_file))[9]) {
             # There is a Less file newer than the CSS file
-            my $css = _process_less_file($input_file);
+            my $css = $process_file->($input_file);
             
             if (defined $css) {
                 # Save the generated CSS data
@@ -104,8 +131,8 @@ get qr{($paths_re)/([^/]*\.css)} => sub {
 
     if (-f $input_file) {
         # Less file exists
-        my $css = _process_less_file($input_file);
-        
+        my $css = $process_file->($input_file);
+
         if ($settings->{save}) {
             # Saving enabled -- save the generated CSS as the requested file
             open(my $f, '>', $css_file_abs);
