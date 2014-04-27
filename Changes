@@ -1,6 +1,7 @@
 Revision history for Dancer-Plugin-Preprocess-Less
 
 {{$NEXT}}
+          Added missing documentation on the use of the lessc executable.
 
 0.020     2014-04-21
           * Added support for the lessc executable
