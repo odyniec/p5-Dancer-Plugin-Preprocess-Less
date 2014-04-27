@@ -221,6 +221,16 @@ directory of the application.
 
 Default: C<'css'>
 
+=head1 LESS COMPILER
+
+The plugin first checks if the C<lessc> executable is available in the current
+PATH, and uses it as the preferred Less compiler. If C<lessc> is not found, the
+plugin tries to use the L<CSS::LESSp> module as the fallback option. If both are
+not available, the plugin generates an error.
+
+Using C<lessc> is recommended, as the CSS::LESSp module only supports a subset
+of Less language features.
+
 =head1 SEE ALSO
 
 =for :list
